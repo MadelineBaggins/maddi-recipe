@@ -12,7 +12,6 @@ categories = [ "data-structures", "text-processing", "web-programming" ]
 description = "A library for parsing and scaling markdown recipes"
 repository = "https://github.com/MadelineBaggins/maddi-recipe/blob/main/src/lib.rs"
 readme = "README.md"
-publish = false
 
 
 [dependencies]
