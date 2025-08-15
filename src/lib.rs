@@ -375,7 +375,3 @@ fn pizza() {
     println!("{scaled}");
     assert_eq!(pizza_src, format!("{recipe}"));
 }
-
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
