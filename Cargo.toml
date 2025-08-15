@@ -4,13 +4,13 @@
 
 [package]
 name = "maddi-recipe"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "GPL-3.0-only"
 keywords = [ "markdown", "md", "cooking", "recipe" ]
 categories = [ "data-structures", "text-processing", "web-programming" ]
 description = "A library for parsing and scaling markdown recipes"
-repository = "https://github.com/MadelineBaggins/maddi-recipe/blob/main/src/lib.rs"
+repository = "https://github.com/MadelineBaggins/maddi-recipe"
 readme = "README.md"
 
 
