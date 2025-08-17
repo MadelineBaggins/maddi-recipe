@@ -100,7 +100,7 @@ impl Display for Volume {
         let cups = qtr_tsps.div_euclid(CUP);
         qtr_tsps = qtr_tsps.rem_euclid(CUP);
         if cups > 0.0 {
-            out.push_str(&out.to_string());
+            out.push_str(&cups.to_string());
             out.push(' ');
         }
         // Check if 3/4 cup remains
