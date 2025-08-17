@@ -25,6 +25,21 @@ pub struct Recipe<'a> {
     pub instructions: Cow<'a, str>,
 }
 
+impl<'a> Recipe<'a> {
+    pub fn into_static(self) -> Recipe<'static> {
+        let Self {
+            preface,
+            ingredients,
+            instructions,
+        } = self;
+        Recipe {
+            preface: preface.to_string().into(),
+            ingredients: ingredients.into_iter().map(|i| i.into_static()).collect(),
+            instructions: instructions.to_string().into(),
+        }
+    }
+}
+
 impl Display for Recipe<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.preface)?;
@@ -301,6 +316,18 @@ fn parse_f32(num: &str) -> Result<f32, std::num::ParseFloatError> {
 }
 
 impl<'a> Ingredient<'a> {
+    fn into_static(self) -> Ingredient<'static> {
+        let Self {
+            indent,
+            quantity,
+            name,
+        } = self;
+        Ingredient {
+            indent: indent.to_string().into(),
+            quantity,
+            name: name.to_string().into(),
+        }
+    }
     fn scale(&self, factor: f32) -> Self {
         let quantity = match &self.quantity {
             Quantity::None => Quantity::None,
@@ -319,16 +346,16 @@ impl<'a> Ingredient<'a> {
             .expect("Attempted to parse a non-ingredient string.");
         let (quantity, name) = 'parse_quantity: {
             // Try to parse as a volume
-            if let Some((amount, unit, name)) = tail.split_twice(" ") {
-                if let Some(volume) = Volume::parse(amount, unit) {
-                    break 'parse_quantity (Quantity::Volume(volume), name);
-                };
-            }
+            if let Some((amount, unit, name)) = tail.split_twice(" ")
+                && let Some(volume) = Volume::parse(amount, unit)
+            {
+                break 'parse_quantity (Quantity::Volume(volume), name);
+            };
             // Try to parse as a simple
-            if let Some((amount, name)) = tail.split_once(" ") {
-                if let Ok(simple) = parse_f32(amount) {
-                    break 'parse_quantity (Quantity::Simple(simple), name);
-                }
+            if let Some((amount, name)) = tail.split_once(" ")
+                && let Ok(simple) = parse_f32(amount)
+            {
+                break 'parse_quantity (Quantity::Simple(simple), name);
             }
             // Resort to a none
             (Quantity::None, tail)
