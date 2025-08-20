@@ -26,6 +26,24 @@ pub struct Recipe<'a> {
 }
 
 impl<'a> Recipe<'a> {
+    pub fn divisors(&self) -> Vec<i32> {
+        let quantities: Vec<f32> = self
+            .ingredients
+            .iter()
+            .filter_map(|i| match &i.quantity {
+                Quantity::Volume(volume) => Some(volume.quarter_teaspoons()),
+                _ => None,
+            })
+            .collect();
+        let max = quantities
+            .iter()
+            .map(|i| i.ceil() as i32)
+            .max()
+            .unwrap_or(1);
+        (1..=max)
+            .filter(|d| quantities.iter().all(|q| q.rem_euclid(*d as f32) == 0.0))
+            .collect()
+    }
     pub fn into_static(self) -> Recipe<'static> {
         let Self {
             preface,
