@@ -83,6 +83,9 @@ pub struct Volume {
 }
 
 impl Volume {
+    pub fn quarter_teaspoons(&self) -> f32 {
+        self.quarter_teaspoons
+    }
     pub fn scale(&self, factor: f32) -> Self {
         Volume {
             quarter_teaspoons: self.quarter_teaspoons * factor,
